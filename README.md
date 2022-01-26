@@ -9,7 +9,7 @@ A simple and responsive weather app built in React.js. Click https://mengjia92.g
   <img src="https://user-images.githubusercontent.com/11355584/151222939-e46b8e48-975b-4469-b19e-a2f0fbd2af0d.jpg" width="400">
 </p>
 
-#### Preview on mobile:
+#### Preview on mobile (iPhone XR):
 
 <p float="left">
   <img src="https://user-images.githubusercontent.com/11355584/151222983-b2a86891-c186-45e1-a075-f18b84a3f6c1.jpg" width="250">
