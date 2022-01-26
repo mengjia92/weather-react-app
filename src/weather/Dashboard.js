@@ -6,7 +6,6 @@ import {DailyWeather} from "./components/DailyWeather";
 import {SearchBar} from "./components/SearchBar";
 import {CurrentWeather} from "./components/CurrentWeather";
 import {HourlyWeather} from "./components/HourlyWeather";
-import {getCurrLocation} from "./helpers";
 
 
 export class Dashboard extends Component {
@@ -30,26 +29,30 @@ export class Dashboard extends Component {
     // }
 
     getNewLocation(val) {
-        // const GEOCODE_URL = "http://www.mapquestapi.com/geocoding/v1/address",
-        //     KEY = "qFEKA5Qhl8U8HCvNR3Y4pOyM2NVAre2m"
+        // // ----------------Alternative API----------------
+        // const GEOCODE_URL = "http://api.weatherstack.com/current",
+        //     KEY = "12d801c2e3a61befbeb5b514f7645330"
         //
-        // axios.get(`${GEOCODE_URL}?key=${KEY}&location=${val}`)
+        //  axios.get(`${GEOCODE_URL}?access_key=${KEY}&query=${this.state.newCity}`)
         //     .then(res => {
-        //         let lat = res.data?.results[0]?.locations[0]?.latLng?.lat.toFixed(4),
-        //             long = res.data?.results[0]?.locations[0]?.latLng?.lng.toFixed(4);
-        //         // this.loadData(lat, long);
+        //         this.setState({currLocInfo: res.data});
+        //
+        //         let lat = res.data?.location.lat,
+        //             long = res.data?.location.lon;
+        //         this.loadData(lat, long)
         //     })
         //     .catch(err => console.log('err', err))
+        // // -----------------------------------------------
 
-        const GEOCODE_URL = "http://api.weatherstack.com/current",
-            KEY = "12d801c2e3a61befbeb5b514f7645330"
+        const GEOCODE_URL = "https://api.opencagedata.com/geocode/v1/json",
+            KEY = "47c0a001ef5c48eca94aed5d1ed53df4"
 
-         axios.get(`${GEOCODE_URL}?access_key=${KEY}&query=${this.state.newCity}`)
+        axios.get(`${GEOCODE_URL}?q=${this.state.newCity}&key=${KEY}`)
             .then(res => {
                 this.setState({currLocInfo: res.data});
 
-                let lat = res.data?.location.lat,
-                    long = res.data?.location.lon;
+                let lat = res.data?.results[0].geometry.lat,
+                    long = res.data?.results[0].geometry.lng;
                 this.loadData(lat, long)
             })
             .catch(err => console.log('err', err))
@@ -117,10 +120,10 @@ export class Dashboard extends Component {
                     <SearchBar newCity={(val) => this.getNewSearch(val)}/>
 
                     <CurrentWeather
-                        currLoc={`${currLocInfo?.location?.country}/${currLocInfo?.location?.name}`}
+                        currLoc={`${currLocInfo?.results[0]?.components?.continent}/${currLocInfo?.results[0]?.components?.country}`}
                         iconVal={newWeather?.currently?.icon}
                         tempVal={newWeather?.currently?.temperature}
-                        timeVal={currLocInfo?.location?.localtime}
+                        timeVal={currLocInfo?.timestamp?.created_http}
                         summary={newWeather?.currently?.summary}
                         humidVal={newWeather?.currently?.humidity}
                         pressureVal={newWeather?.currently?.pressure} />
